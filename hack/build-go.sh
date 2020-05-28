@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x
 
 DEST_DIR="bin"
 
@@ -40,7 +41,7 @@ if [ "$GO111MODULE" == "off" ]; then
 	export GO15VENDOREXPERIMENT=1
 	export GOBIN=${PWD}/bin
 	export GOPATH=${PWD}/gopath
-	go install -tags no_openssl -ldflags "${LDFLAGS}" "$@" ${REPO_PATH}/multus
+	go build -o ${PWD}/bin/multus -tags no_openssl -ldflags "${LDFLAGS}" "$@" ${REPO_PATH}/cmd
 else
 	# build with go modules
 	export GO111MODULE=on
@@ -50,5 +51,5 @@ else
 	fi
 
 	echo "Building plugins"
-	go build ${BUILD_ARGS[*]} -ldflags "${LDFLAGS}" "$@" ./multus
+	go build ${BUILD_ARGS[*]} -ldflags "${LDFLAGS}" "$@" ./cmd
 fi
